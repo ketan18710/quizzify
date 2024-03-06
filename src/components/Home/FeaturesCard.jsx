@@ -30,7 +30,7 @@ const FeaturesCard = ({ feature }) => {
       case 2:
         return colors.white;
       case 3:
-        return colors.white;
+        return colors.black;
 
       default:
         break;
@@ -43,7 +43,7 @@ const FeaturesCard = ({ feature }) => {
       case 2:
         return `bg-[${colors.black}] text-[${colors.green}]`;
       case 3:
-        return `bg-[${colors.white}] text-[${colors.black}]`;
+        return `bg-[${colors.white}] text-[${colors.white}]`;
 
       default:
         break;
@@ -55,18 +55,18 @@ const FeaturesCard = ({ feature }) => {
     >
       <div className="w-1/2 flex flex-col text-start justify-between">
         <h1
-          className={`font-medium text-3xl bg-[${getTitleColor()}] text-start  inline-block py-1 px-2`}
+          className={`font-medium text-3xl bg-[${getTitleColor()}] text-start ${getTitleColor() === colors.black ? 'text-white' : ''} inline-block py-1 px-2`}
         >
           {title}
         </h1>
         <Link
           to={link}
-          className="text-xl flex gap-3 justify-start items-center"
+          className="text-xl flex gap-3 justify-start items-center "
         >
           <FaCircleArrowRight
-            className={`-rotate-12 text-2xl ${getLinkColor()} `}
+            className={`-rotate-12 text-2xl ${getLinkColor()} ${getTitleColor() === colors.black ? 'text-white' : ''}`}
           />{" "}
-          Learn More
+         <span className={`${getTitleColor() === colors.black ? 'text-white' : ''}`}>Learn More</span>
         </Link>
       </div>
       <img
