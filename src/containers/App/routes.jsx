@@ -14,6 +14,7 @@ import { API_CONSTANTS, APP_ROUTES } from "../../utils";
 import { AuthHelpers } from "../../helpers";
 import Home from "../../components/Home";
 import CreateFlow from "../CreateFlow";
+import Analytics from "../Analytics";
 
 const allRoutes = [
   {
@@ -33,6 +34,24 @@ const allRoutes = [
     isProtected: false,
     properties: { mode: "manual" },
     component: CreateFlow,
+  },
+  {
+    path: APP_ROUTES.VIEW_QUIZ_ANALYTICS,
+    isProtected: false,
+    properties: { renderPath: APP_ROUTES.VIEW_QUIZ_ANALYTICS },
+    component: Analytics,
+  },
+  {
+    path: APP_ROUTES.VIEW_USER_ANALYTICS_FOR_QUIZ,
+    isProtected: false,
+    properties: { renderPath: APP_ROUTES.VIEW_USER_ANALYTICS_FOR_QUIZ },
+    component: Analytics,
+  },
+  {
+    path: APP_ROUTES.QUIZZES,
+    isProtected: false,
+    properties: { renderPath: APP_ROUTES.QUIZZES },
+    component: Analytics,
   },
 ];
 const PrivateRoutes = (props) => {

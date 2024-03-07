@@ -10,11 +10,13 @@ import { question_types } from "../../components/CreateMode/constants";
 const CreateFlow = (props) => {
   const location = useLocation();
   const [questions, setQuestions] = useState([]);
+  const [quizName, setQuizName] = useState("New Quiz");
   const [updateQuesIndex, setUpdateQuesIndex] = useState(-1);
   const initQuestion = {
     question_type: question_types.MCQ,
     question: "",
     options: [],
+    save: false,
     answerIndex: null,
   };
   const [currQuestion, setCurrQuestion] = useState(initQuestion);
@@ -104,6 +106,8 @@ const CreateFlow = (props) => {
           <QuestionsList
             createQuiz={createQuiz}
             questions={questions}
+            quizName={quizName}
+            setQuizName={setQuizName}
             deleteQues={deleteQues}
             editQuestion={editQuestion}
             {...props}
