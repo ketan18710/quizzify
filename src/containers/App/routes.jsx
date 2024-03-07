@@ -15,6 +15,10 @@ import { AuthHelpers } from "../../helpers";
 import Home from "../../components/Home";
 import CreateFlow from "../CreateFlow";
 import Analytics from "../Analytics";
+import Login from "../../components/auth/Login";
+import ForgotPassword from "../../components/auth/ForgotPassword";
+import ResetPassword from "../../components/auth/ResetPassword";
+import Signup from "../../components/auth/Signup";
 
 const allRoutes = [
   {
@@ -27,7 +31,25 @@ const allRoutes = [
     path: APP_ROUTES.LOGIN,
     isProtected: false,
     properties: { ketan: 2 },
-    component: Home,
+    component: Login,
+  },
+  {
+    path: APP_ROUTES.FORGOT_PASSWORD,
+    isProtected: false,
+    properties: { ketan: 2 },
+    component: ForgotPassword,
+  },
+  {
+    path: APP_ROUTES.RESET_PASSWORD,
+    isProtected: false,
+    properties: { ketan: 2 },
+    component: ResetPassword,
+  },
+  {
+    path: APP_ROUTES.REGISTER,
+    isProtected: false,
+    properties: { ketan: 2 },
+    component: Signup,
   },
   {
     path: APP_ROUTES.MANUAL_MODE,

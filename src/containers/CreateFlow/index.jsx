@@ -37,24 +37,24 @@ const CreateFlow = (props) => {
   console.log(questions, "questions");
   const createQuiz = () => {
     const data = {
-      id: "123e4567-e89b-12d3-a456-4266554403200",
+      id: "123e4567-e89b-12d3-a456-4266554404200",
       title: "Sample Quiz",
       status: "Active",
-      createdBy: "60f6c5d7a5d9c20015c7d5f1",
-      lastUpdatedBy: "60f6c5d7a5d9c20015c7d5f1",
+      createdBy: "65d571bde2a2db4357efbf55",
+      lastUpdatedBy: "65d571bde2a2db4357efbf55",
       persistQuestions: false,
       questions: [
         {
           question_title: "What is the capital of France?",
           options: ["Ketan", "London", "Berlin"],
           correct_answer: "Ketan",
-          question_type: "mCQ",
+          question_type: "MCQ",
         },
         {
           question_title: "What is the largest planet in our solar system?",
           options: ["Mars", "Jupiter", "Venus", "Saturn"],
           correct_answer: "Jupiter",
-          question_type: "mCQ",
+          question_type: "MCQ",
         },
         {
           question_title: "Do you like this quiz?",

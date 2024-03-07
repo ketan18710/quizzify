@@ -8,6 +8,7 @@ export const APP_ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
   FORGOT_PASSWORD: "/forgotpassword",
+  RESET_PASSWORD: "/resetpassword",
   ONBOARDING: "/onboarding",
   HOME: "/",
   VIEW_QUIZ_ANALYTICS: "/analytics/quiz/:id",
