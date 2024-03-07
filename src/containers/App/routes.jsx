@@ -60,6 +60,19 @@ const allRoutes = [
   {
     path: APP_ROUTES.VIEW_QUIZ_ANALYTICS,
     isProtected: false,
+    properties: { renderPath: APP_ROUTES.VIEW_QUIZ_ANALYTICS },
+    component: Analytics,
+  },
+  {
+    path: APP_ROUTES.VIEW_USER_ANALYTICS_FOR_QUIZ,
+    isProtected: false,
+    properties: { renderPath: APP_ROUTES.VIEW_USER_ANALYTICS_FOR_QUIZ },
+    component: Analytics,
+  },
+  {
+    path: APP_ROUTES.QUIZZES,
+    isProtected: false,
+    properties: { renderPath: APP_ROUTES.QUIZZES },
     component: Analytics,
   },
 ];
