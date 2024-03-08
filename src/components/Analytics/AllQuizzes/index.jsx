@@ -7,6 +7,7 @@ import { API_CONSTANTS, APP_ROUTES, replaceInString } from "../../../utils";
 import BackIcon from "../../BackIcon";
 import PageTitle from "../../PageTitle";
 import { toast } from "react-toastify";
+import './customLoader.css';
 
 const AllQuizzes = (props) => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const AllQuizzes = (props) => {
     <div className="pb-16">
       <PageTitle text="All Quizzes" />
       {loader ? (
-        <h1>LOADER</h1>
+        <div className="loader"></div>
       ) : (
         <table className="min-w-full divide-y border divide-gray-200">
           <thead className="bg-gray-50">

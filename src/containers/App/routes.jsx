@@ -15,6 +15,7 @@ import { AuthHelpers } from "../../helpers";
 import Home from "../../components/Home";
 import CreateFlow from "../CreateFlow";
 import Analytics from "../Analytics";
+import AttendeeFlow from "../AttendeeFlow"; // Update the path as per your project structure
 
 const allRoutes = [
   {
@@ -53,6 +54,12 @@ const allRoutes = [
     properties: { renderPath: APP_ROUTES.QUIZZES },
     component: Analytics,
   },
+  {
+    path: APP_ROUTES.ATTEND_QUIZ, // Define the path for the Attendee flow
+    isProtected: false, // Update as per your authentication requirements
+    properties: {renderPath: APP_ROUTES.ATTEND_QUIZ}, // Add any additional properties if needed
+    component: AttendeeFlow, // Use the AttendeeFlow component
+  },  
 ];
 const PrivateRoutes = (props) => {
   console.log(props, "PrivateRoutes");
