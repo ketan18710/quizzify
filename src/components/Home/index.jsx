@@ -18,6 +18,7 @@ import FeaturesCard from "./FeaturesCard";
 import ModesCard from "./ModesCard";
 import AccordionItem from "./Accordian";
 import TeamMemberCard from "./TeamMemberCard";
+import TestimonialSlider from "./TestimonialSlider";
 import Carousel from "./Carousel";
 import Header from "../Header";
 import Footer from "../Footer";
@@ -347,7 +348,7 @@ function Home(props) {
         <section className="container my-[15vh]">
         {/* <div className="container my-16 bg-[#191A23] flex px-8 py-12 gap-x-4 flex-wrap border rounded-[40px] border-black border-1"> */}
         <div>
-        <Carousel />
+        <TestimonialSlider />
         </div>
       </section>
         <div className="container my-8">
