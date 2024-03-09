@@ -21,15 +21,11 @@ const Login = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-r from-white-900 to-white-500">
-      <img
-        src={quizzifyLogo}
-        alt="Logo"
-        className="absolute top-0 left-0 m-4 max-w-full h-auto w-24  md:w-44 lg:w-48 xl:w-64"
-      />
+    <div className="relative w-screen h-screen flex flex-col justify-items-start items-center bg-gradient-to-r from-white-900 to-white-500">     
       <div className="container mx-auto w-96 border-2 border-gray-500 rounded-xl p-8">
         <div className="max-w-md mx-auto my-10">
-          <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200 text-center bg-[#B9FF66]">Login</h1>
+          <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200 text-center bg-[#B9FF66]">Quizzify</h1>
+          <h4 className="my-1 text-1xl font-thin text-gray-700 dark:text-gray-200 text-center ">Login</h4>
           <div className="mb-2 flex justify-center py-2">
             {/* <Button
               variant="contained"
@@ -51,8 +47,8 @@ const Login = () => {
                 onChange={handleEmailChange}
                 placeholder="you@company.com"
                 fullWidth                
-                className="mb-6"
-                background-color="#B9FF66"                
+                className="mb-6"       
+                style={{bgcolor: "#B9FF66" }}                         
               />
               <Input
                 type="password"
@@ -68,7 +64,7 @@ const Login = () => {
               </Button>
               <p className="text-sm text-center text-gray-400 mt-4">
                 Don't have an Account?{" "}
-                <a href="https://dumbbelldoor.netlify.app/signup" className="text-indigo-400 underline">
+                <a href="https://quizzify.netlify.app/signup" className="text-blue-800 underline">
                   Signup
                 </a>
                 .

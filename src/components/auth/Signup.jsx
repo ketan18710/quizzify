@@ -21,25 +21,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen flex flex-col justify-center items-center" style={{ background: "linear-gradient(to right, white, white)" }}>
-       <img
-        src={quizzifyLogo}
-        alt="Logo"
-        className="absolute top-0 left-0 m-4 max-w-full h-auto w-24  md:w-44 lg:w-48 xl:w-64"
-      />
-      <div className="container mx-auto w-96 border-2 border-gray-500 rounded-xl">
+    <div className="relative w-screen h-screen flex flex-col justify-items-start items-center  bg-gradient-to-r from-white-900 to-white-500">
+      <div className="container mx-auto w-96 border-2 border-gray-500 rounded-xl p-8">
         <div className="max-w-md mx-auto my-10">
-          <div className="text-center">
-            <h1 className="my-3 text-3xl font-semibold text-green-700 dark:text-green-200">Sign Up</h1>
-            <div className="mb-2 flex justify-center py-2">
-              {/* <button type="submit" className="px-10 py-1 my-4 flex items-center justify-center text-white bg-blue-600 rounded-full focus:bg-blue-700 focus:outline-none">
-                <FcGoogle />
-              </button> */}
-            </div>
-          </div>
-
+            <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200 text-center bg-[#B9FF66]">Quizzify</h1>
+            <h4 className="my-1 text-1xl font-thin text-gray-700 dark:text-gray-200 text-center ">Sign Up</h4>          
+            <div className="mb-2 flex justify-center py-2"></div>
           <hr className="w-[90%] m-auto h-[0.05rem] bg-gray-500 border-0" />
-
           <div className="m-7">
             <form onSubmit={handleSubmit}>
               {/* Email Input */}
@@ -71,7 +59,7 @@ const Signup = () => {
 
               {/* Register Button */}
               <div className="mb-2">
-                <button type="submit" className="w-full px-3 py-4 text-white bg-lime-300 rounded-xl focus:bg-violet-800 focus:outline-none">Register</button>
+                <button type="submit" className="w-full px-3 py-4 text-black bg-green rounded-xl focus:bg-lime-600 focus:outline-none">Register</button>
               </div>
 
               {/* Login Link */}

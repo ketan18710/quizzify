@@ -41,14 +41,12 @@ const allRoutes = [
   },
   {
     path: APP_ROUTES.RESET_PASSWORD,
-    isProtected: false,
-    properties: { ketan: 2 },
+    isProtected: false,    
     component: ResetPassword,
   },
   {
     path: APP_ROUTES.REGISTER,
-    isProtected: false,
-    properties: { ketan: 2 },
+    isProtected: false,    
     component: Signup,
   },
   {
