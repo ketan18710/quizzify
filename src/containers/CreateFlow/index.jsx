@@ -1,23 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../components/CreateMode/Sidebar";
 import Header from "../../components/Header";
 import QuestionsList from "../../components/CreateMode/QuestionsList";
 import { useDispatch, useSelector } from "react-redux";
-import { createQuizAction } from "../../redux/actions";
+import {
+  createQuizAction,
+  editQuizAction,
+  getWholeQuizAction,
+  resetCreateQuizAction,
+  resetEditQuizAction,
+  resetGetWholeQuizAction,
+} from "../../redux/actions";
 import { question_types } from "../../components/CreateMode/constants";
+import { API_CONSTANTS, APP_ROUTES } from "../../utils";
+import { toast } from "react-toastify";
 
 const CreateFlow = (props) => {
+  const { mode } = props;
   const location = useLocation();
+  const params = useParams();
   const [questions, setQuestions] = useState([]);
   const [quizName, setQuizName] = useState("New Quiz");
   const [updateQuesIndex, setUpdateQuesIndex] = useState(-1);
   const initQuestion = {
     question_type: question_types.MCQ,
-    question: "",
+    question_title: "",
     options: [],
     save: false,
-    answerIndex: null,
+    correct_answer: null,
   };
   const [currQuestion, setCurrQuestion] = useState(initQuestion);
   const addQuestion = (question) => {
@@ -28,45 +39,87 @@ const CreateFlow = (props) => {
     setCurrQuestion(questions[index]);
     setUpdateQuesIndex(index);
   };
+  useEffect(() => {
+    if (mode && mode === "edit" && params?.id) {
+      dispatch(getWholeQuizAction({ id: params?.id }));
+    }
+  }, [mode, params]);
 
   const quizSelector = useSelector((state) => state.quiz);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
-    dispatch(createQuizAction("data"));
+    return () => {
+      dispatch(resetCreateQuizAction());
+      dispatch(resetEditQuizAction());
+      dispatch(resetGetWholeQuizAction());
+    };
   }, []);
+  useEffect(() => {
+    switch (quizSelector.quiz.status) {
+      case API_CONSTANTS.success:
+        toast.success("Quiz Created successfully");
+        navigate(APP_ROUTES.QUIZZES);
+        break;
+      case API_CONSTANTS.error:
+        toast.error("Error!!");
+        break;
+
+      default:
+        break;
+    }
+  }, [quizSelector.quiz]);
+  useEffect(() => {
+    switch (quizSelector.wholeQuiz.status) {
+      case API_CONSTANTS.success:
+        {
+          setQuizName(quizSelector?.wholeQuiz?.data?.title);
+          console.log(quizSelector?.wholeQuiz?.data, "ketan");
+          setQuestions(quizSelector?.wholeQuiz?.data?.[0]?.questions);
+        }
+        break;
+      case API_CONSTANTS.error:
+        toast.error("Error!!");
+        break;
+
+      default:
+        break;
+    }
+  }, [quizSelector.wholeQuiz]);
   console.log(quizSelector, "quizSelector");
   console.log(questions, "questions");
   const createQuiz = () => {
+    if (questions.length <= 0) {
+      toast.error("Add atleast 1 question");
+      return;
+    }
     const data = {
-      id: "123e4567-e89b-12d3-a456-4266554404200",
-      title: "Sample Quiz",
+      title: quizName,
       status: "Active",
-      createdBy: "65d571bde2a2db4357efbf55",
-      lastUpdatedBy: "65d571bde2a2db4357efbf55",
-      persistQuestions: false,
-      questions: [
-        {
-          question_title: "What is the capital of France?",
-          options: ["Ketan", "London", "Berlin"],
-          correct_answer: "Ketan",
-          question_type: "MCQ",
-        },
-        {
-          question_title: "What is the largest planet in our solar system?",
-          options: ["Mars", "Jupiter", "Venus", "Saturn"],
-          correct_answer: "Jupiter",
-          question_type: "MCQ",
-        },
-        {
-          question_title: "Do you like this quiz?",
-          options: ["Yes", "No"],
-          correct_answer: "",
-          question_type: "poll",
-        },
-      ],
+      questions,
     };
 
     dispatch(createQuizAction(data));
+  };
+  const saveQuiz = () => {
+    if (questions.length <= 0) {
+      toast.error("Add atleast 1 question");
+      return;
+    }
+    const data = {
+      ...quizSelector.wholeQuiz.data[0],
+      title: quizName,
+      questions,
+    };
+
+    dispatch(editQuizAction(data));
+  };
+  const submitAction = () => {
+    if (mode === "manual") {
+      createQuiz();
+    } else if (mode === "edit") {
+      saveQuiz();
+    }
   };
   const deleteQues = (delIndex) => {
     setQuestions(questions.filter((ques, index) => index !== delIndex));
@@ -104,7 +157,7 @@ const CreateFlow = (props) => {
         <div className=" w-1/2 overflow-y-auto py-3 box-border rounded-lg  shadow-lg pl-2">
           {/* <Sidebar {...props} /> */}
           <QuestionsList
-            createQuiz={createQuiz}
+            submitAction={submitAction}
             questions={questions}
             quizName={quizName}
             setQuizName={setQuizName}
