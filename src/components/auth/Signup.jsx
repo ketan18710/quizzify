@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input } from "@mui/base";
+import axios from "axios";
 //import { FcGoogle } from "react-icons/fc";
 
 const Signup = () => {
@@ -9,7 +10,20 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Your form submission logic here
+
+    try {
+      const response = await axios.post(
+        "https://quizzify-4.onrender.com/api/users/register",
+        { email, password }
+      );
+      //console.log(response.data.message);
+      console.log("User registered successfully");
+     // toast.success(response.data.message);
+    } catch (error) {
+      console.log(error);
+      console.log("User registation  unsuccessfull");
+      //toast.error(error.response.data.message);
+    }
   };
 
   const handlePasswordChange = (e) => {
@@ -39,7 +53,7 @@ const Signup = () => {
                   required
                   onChange={handleEmailChange}
                   placeholder="you@company.com"
-                  fullWidth
+                  fullWidth                  
                 />
               </div>
 

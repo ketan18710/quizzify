@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Button, Input } from "@mui/base";
 import quizzifyLogo from "../Home/images/heroImg.svg";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { APP_ROUTES } from "../../utils";
 //import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
@@ -9,9 +15,24 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login functionality here
-  };
 
+    try {
+      const response = await axios.post(
+        "https://quizzify-4.onrender.com/api/users/login",
+        { email, password }
+      );
+      console.log('Login works');
+      //console.log(response?.data?.message);
+     // toast.success(response?.data?.message);
+      const navigate = useNavigate();      
+      navigate(APP_ROUTES.HOME);
+       //history.push(APP_ROUTES.HOME); 
+
+    } catch (error) {
+     // console.log(error.response.data.message);
+      toast.error(error?.response?.data?.message);
+    }
+  };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
@@ -46,7 +67,7 @@ const Login = () => {
                 required
                 onChange={handleEmailChange}
                 placeholder="you@company.com"
-                fullWidth                
+                fullwidth                
                 className="mb-6"       
                 style={{bgcolor: "#B9FF66" }}                         
               />
@@ -56,7 +77,7 @@ const Login = () => {
                 required
                 onChange={handlePasswordChange}
                 placeholder="Your Password"
-                fullWidth
+                fullwidth
                 className="mb-4"
               />
               <Button type="submit" variant="contained" color="primary" fullWidth>
@@ -64,7 +85,7 @@ const Login = () => {
               </Button>
               <p className="text-sm text-center text-gray-400 mt-4">
                 Don't have an Account?{" "}
-                <a href="https://quizzify.netlify.app/signup" className="text-blue-800 underline">
+                <a href="http://localhost:5173/register" className="text-blue-800 underline">
                   Signup
                 </a>
                 .
@@ -72,7 +93,8 @@ const Login = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div>   
+      <ToastContainer />  
     </div>
   );
 };
