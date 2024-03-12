@@ -6,8 +6,8 @@ import {
   Typography,
   Avatar,
 } from "@material-tailwind/react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import '../../../node_modules/swiper/swiper-bundle.min.css'
+import { Swiper, SwiperSlide } from "swiper/react";
+import "../../../node_modules/swiper/swiper-bundle.min.css";
 
 function StarIcon() {
   return (
@@ -25,38 +25,33 @@ function StarIcon() {
     </svg>
   );
 }
- 
+
 export default function TestimonialCard({ image, name, company, comment }) {
   return (
     <Card color="transparent" shadow={false} className="w-full max-w-[26rem]">
-<CardHeader
-  color="transparent"
-  floated={false}
-  shadow={false}
-  className="mx-0 flex items-start gap-4 pt-0 pb-8" // Change 'items-center' to 'items-start'
->
-  <Avatar
-    size="lg"
-    variant="circular"
-    src={image}
-    alt={name}
-  />
-  <div className="flex flex-col gap-0">
-    <Typography variant="h5" color="blue-gray" className="text-left">
-      {name}
-    </Typography>
-    <Typography color="blue-gray" className="text-left">
-      {company}
-    </Typography>
-    <div className="flex items-center gap-1">
-      <StarIcon />
-      <StarIcon />
-      <StarIcon />
-      <StarIcon />
-      <StarIcon />
-    </div>
-  </div>
-</CardHeader>
+      <CardHeader
+        color="transparent"
+        floated={false}
+        shadow={false}
+        className="mx-0 flex items-start gap-4 pt-0 pb-8" // Change 'items-center' to 'items-start'
+      >
+        <Avatar size="lg" variant="circular" src={image} alt={name} />
+        <div className="flex flex-col gap-0">
+          <Typography variant="h5" color="blue-gray" className="text-left">
+            {name}
+          </Typography>
+          <Typography color="blue-gray" className="text-left">
+            {company}
+          </Typography>
+          <div className="flex items-center gap-1">
+            <StarIcon />
+            <StarIcon />
+            <StarIcon />
+            <StarIcon />
+            <StarIcon />
+          </div>
+        </div>
+      </CardHeader>
 
       <CardBody className="mb-6 p-0">
         <Typography>{comment}</Typography>

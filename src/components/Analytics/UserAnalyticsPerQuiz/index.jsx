@@ -8,7 +8,7 @@ import {
   resetUserQuizDataAction,
 } from "../../../redux/actions";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { APP_ROUTES, replaceInString } from "../../../utils";
+import { API_CONSTANTS, APP_ROUTES, replaceInString } from "../../../utils";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,6 +20,7 @@ import {
 } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
 import PageTitle from "../../PageTitle";
+import ComponentLoader from "../../Loader/ComponentLoader";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -141,8 +142,10 @@ const UserAnalyticsPerQuiz = (props) => {
       //   },
     },
   };
-  return (
-    <div>
+  return quizData.status === API_CONSTANTS.loading ? (
+    <ComponentLoader />
+  ) : (
+    <>
       <PageTitle text={` Analytics for : ${user}`} />
       <section>
         {/* <Bar data={barchartData} options={options} /> */}
@@ -158,7 +161,19 @@ const UserAnalyticsPerQuiz = (props) => {
               </th>
               <th
                 scope="col"
-                className="px-6 w-[15%] border border-gray-300 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 w-[10%] border border-gray-300 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Submitted Answer
+              </th>
+              <th
+                scope="col"
+                className="px-6 w-[10%] border border-gray-300 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Correct Answer
+              </th>
+              <th
+                scope="col"
+                className="px-6 w-[10%] border border-gray-300 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider"
               >
                 Result
               </th>
@@ -170,6 +185,12 @@ const UserAnalyticsPerQuiz = (props) => {
                 <td className="px-6 py-4 border border-gray-300 whitespace-nowrap text-start">
                   {row.question}
                 </td>
+                <td className="px-6 py-4 border border-gray-300 whitespace-nowrap text-start">
+                  {row.userAnswer}
+                </td>
+                <td className="px-6 py-4 border border-gray-300 whitespace-nowrap text-start">
+                  {row.correctAnswer}
+                </td>
                 <td className="px-6 uppercase font-medium py-4 border border-gray-300 whitespace-nowrap text-start">
                   {row.isCorrect ? "Correct ✅" : "Incorrect ❌"}
                 </td>
@@ -178,7 +199,7 @@ const UserAnalyticsPerQuiz = (props) => {
           </tbody>
         </table>
       </section>
-    </div>
+    </>
   );
 };
 

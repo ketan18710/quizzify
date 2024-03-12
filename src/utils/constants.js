@@ -14,7 +14,13 @@ export const APP_ROUTES = {
   VIEW_QUIZ_ANALYTICS: "/analytics/quiz/:id",
   VIEW_USER_ANALYTICS_FOR_QUIZ: "/analytics/quiz/:id/users/:user",
   MANUAL_MODE: "/create-manual",
+<<<<<<< HEAD
   ATTEND_QUIZ: "/attend-quiz",
+=======
+  AI_MODE: "/create-ai",
+  EDIT_QUIZ: "/edit-quiz/:id",
+  ATTEMPT_QUIZ: "/attempt/:id",
+>>>>>>> 067f24541cd0a9469184c0135db433c4d640064c
 };
 
 export const AUTH_TOKEN = "authenticationToken";

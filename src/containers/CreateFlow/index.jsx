@@ -1,23 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../components/CreateMode/Sidebar";
 import Header from "../../components/Header";
 import QuestionsList from "../../components/CreateMode/QuestionsList";
 import { useDispatch, useSelector } from "react-redux";
-import { createQuizAction } from "../../redux/actions";
+import {
+  createQuizAction,
+  editQuizAction,
+  getWholeQuizAction,
+  resetCreateQuizAction,
+  resetEditQuizAction,
+  resetGetWholeQuizAction,
+} from "../../redux/actions";
 import { question_types } from "../../components/CreateMode/constants";
+import { API_CONSTANTS, APP_ROUTES, replaceInString } from "../../utils";
+import { toast } from "react-toastify";
+import AttemptQuiz from "../../components/AttemptQuiz";
 
 const CreateFlow = (props) => {
+  const { mode } = props;
   const location = useLocation();
+  const params = useParams();
   const [questions, setQuestions] = useState([]);
   const [quizName, setQuizName] = useState("New Quiz");
+  const [modalTrigger, setModalTrigger] = useState(false);
+  const [generatedQuizId, setGeneratedQuizId] = useState(null);
   const [updateQuesIndex, setUpdateQuesIndex] = useState(-1);
   const initQuestion = {
     question_type: question_types.MCQ,
-    question: "",
+    question_title: "",
     options: [],
     save: false,
-    answerIndex: null,
+    correct_answer: null,
   };
   const [currQuestion, setCurrQuestion] = useState(initQuestion);
   const addQuestion = (question) => {
@@ -28,45 +42,106 @@ const CreateFlow = (props) => {
     setCurrQuestion(questions[index]);
     setUpdateQuesIndex(index);
   };
+  useEffect(() => {
+    if (mode && mode === "edit" && params?.id) {
+      dispatch(getWholeQuizAction({ id: params?.id }));
+    }
+  }, [mode, params]);
 
   const quizSelector = useSelector((state) => state.quiz);
+  localStorage.setItem("redux", JSON.stringify(quizSelector));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
-    dispatch(createQuizAction("data"));
+    return () => {
+      dispatch(resetCreateQuizAction());
+      dispatch(resetEditQuizAction());
+      dispatch(resetGetWholeQuizAction());
+      setGeneratedQuizId(null);
+    };
   }, []);
+  useEffect(() => {
+    switch (quizSelector.quiz.status) {
+      case API_CONSTANTS.success:
+        toast.success("Quiz Created successfully");
+        setGeneratedQuizId(quizSelector?.quiz?.data?._id);
+        navigate(APP_ROUTES.QUIZZES);
+        // setModalTrigger(true);
+        break;
+      case API_CONSTANTS.error:
+        toast.error("Error!!");
+        break;
+
+      default:
+        break;
+    }
+  }, [quizSelector.quiz]);
+  useEffect(() => {
+    switch (quizSelector.wholeQuiz.status) {
+      case API_CONSTANTS.success:
+        {
+          setQuizName(quizSelector?.wholeQuiz?.data?.title);
+          setQuestions(quizSelector?.wholeQuiz?.data?.questions);
+        }
+        break;
+      case API_CONSTANTS.error:
+        toast.error("Error!!");
+        break;
+
+      default:
+        break;
+    }
+  }, [quizSelector.wholeQuiz]);
+  useEffect(() => {
+    switch (quizSelector.editQuiz.status) {
+      case API_CONSTANTS.success:
+        {
+          toast.success("Changes saved successfully");
+          navigate(APP_ROUTES.QUIZZES);
+        }
+        break;
+      case API_CONSTANTS.error:
+        toast.error("Error!!");
+        break;
+
+      default:
+        break;
+    }
+  }, [quizSelector.editQuiz]);
   console.log(quizSelector, "quizSelector");
   console.log(questions, "questions");
   const createQuiz = () => {
+    if (questions.length <= 0) {
+      toast.error("Add atleast 1 question");
+      return;
+    }
     const data = {
-      id: "123e4567-e89b-12d3-a456-4266554403200",
-      title: "Sample Quiz",
+      title: quizName,
       status: "Active",
-      createdBy: "60f6c5d7a5d9c20015c7d5f1",
-      lastUpdatedBy: "60f6c5d7a5d9c20015c7d5f1",
-      persistQuestions: false,
-      questions: [
-        {
-          question_title: "What is the capital of France?",
-          options: ["Ketan", "London", "Berlin"],
-          correct_answer: "Ketan",
-          question_type: "mCQ",
-        },
-        {
-          question_title: "What is the largest planet in our solar system?",
-          options: ["Mars", "Jupiter", "Venus", "Saturn"],
-          correct_answer: "Jupiter",
-          question_type: "mCQ",
-        },
-        {
-          question_title: "Do you like this quiz?",
-          options: ["Yes", "No"],
-          correct_answer: "",
-          question_type: "poll",
-        },
-      ],
+      questions,
     };
 
     dispatch(createQuizAction(data));
+  };
+  const saveQuiz = () => {
+    if (questions.length <= 0) {
+      toast.error("Add atleast 1 question");
+      return;
+    }
+    const data = {
+      ...quizSelector.wholeQuiz.data,
+      title: quizName,
+      questions,
+    };
+
+    dispatch(editQuizAction(data));
+  };
+  const submitAction = () => {
+    if (mode === "manual") {
+      createQuiz();
+    } else if (mode === "edit") {
+      saveQuiz();
+    }
   };
   const deleteQues = (delIndex) => {
     setQuestions(questions.filter((ques, index) => index !== delIndex));
@@ -85,35 +160,62 @@ const CreateFlow = (props) => {
       return ["", ""];
     }
   };
+  // console.log(generatedQuizId, "generatedQuizId");
+  const links = [
+    {
+      text: "Manual Mode",
+      link: APP_ROUTES.MANUAL_MODE,
+    },
+    {
+      text: "AI Mode",
+      link: APP_ROUTES.AI_MODE,
+    },
+    // {
+    //   text: "Features",
+    //   link: APP_ROUTES.HOME,
+    // },
+    // {
+    //   text: "Features",
+    //   link: APP_ROUTES.HOME,
+    // },
+  ];
   return (
     <>
-      <Header />
-      <div className="container mt-10 h-[86vh] py-4 flex flex-row gap-8 bg-green-300 box-border">
-        <div className="container w-1/2">
-          <Sidebar
-            currQuestion={currQuestion}
-            setCurrQuestion={setCurrQuestion}
-            addQuestion={addQuestion}
-            updateQuesIndex={updateQuesIndex}
-            isPoll={questions?.[0]?.question_type === question_types.POLL}
-            firstQues={questions.length === 0}
-            updateQues={updateQues}
-            {...props}
-          />
+      {mode === "attempt" ? (
+        <div className="container mt-10 h-[86vh] py-4 flex items-center overflow-hidden justify-center bg-green-300 box-border">
+          <AttemptQuiz />
         </div>
-        <div className=" w-1/2 overflow-y-auto py-3 box-border rounded-lg  shadow-lg pl-2">
-          {/* <Sidebar {...props} /> */}
-          <QuestionsList
-            createQuiz={createQuiz}
-            questions={questions}
-            quizName={quizName}
-            setQuizName={setQuizName}
-            deleteQues={deleteQues}
-            editQuestion={editQuestion}
-            {...props}
-          />
-        </div>
-      </div>
+      ) : (
+        <>
+          <Header links={links} />
+          <div className="container mt-10 h-[86vh] py-4 flex flex-row gap-8 bg-green-300 box-border">
+            <div className="container w-1/2">
+              <Sidebar
+                currQuestion={currQuestion}
+                setCurrQuestion={setCurrQuestion}
+                addQuestion={addQuestion}
+                updateQuesIndex={updateQuesIndex}
+                isPoll={questions?.[0]?.question_type === question_types.POLL}
+                firstQues={questions.length === 0}
+                updateQues={updateQues}
+                {...props}
+              />
+            </div>
+            <div className=" w-1/2 overflow-y-auto py-3 box-border rounded-lg  shadow-lg pl-2">
+              {/* <Sidebar {...props} /> */}
+              <QuestionsList
+                submitAction={submitAction}
+                questions={questions}
+                quizName={quizName}
+                setQuizName={setQuizName}
+                deleteQues={deleteQues}
+                editQuestion={editQuestion}
+                {...props}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
